@@ -1,107 +1,108 @@
 # TypeScript API Automation Framework
 
-A modern, TypeScript-based API testing framework that provides a robust and type-safe solution for automating API testing. Built with modern ES modules and featuring advanced capabilities like request queuing, caching, and comprehensive error handling.
-
-## Table of Contents
-
-- [Features](#features)
-- [Quick Start](#quick-start)
-- [Documentation](#documentation)
-- [Examples](#examples)
-- [Contributing](#contributing)
-- [License](#license)
+A robust and extensible TypeScript framework for API testing and automation. This framework provides features like request queuing, caching, error handling, and more to make API testing easier and more reliable.
 
 ## Features
 
-- **Modern TypeScript & ES Modules**: Built with TypeScript and modern ES module syntax
-- **Type-Safe API Testing**: Full TypeScript support with interfaces for requests and responses
-- **Request Management**:
+- **Request Management**
   - Automatic request queuing with configurable concurrency
   - Response caching for GET requests
-  - Retry mechanism with exponential backoff
-- **Error Handling**:
-  - Custom error types for network and validation errors
+  - Configurable retry mechanism
+- **Error Handling**
+  - Custom error types (NetworkError, ValidationError)
   - Detailed error information including status codes and response data
-- **Developer Experience**:
-  - Clean, promise-based API
-  - Comprehensive logging for debugging
-  - Easy to extend and customize
+- **Request Customization**
+  - Support for custom headers and authentication
+  - Request interceptors for modifying requests
+- **Performance**
+  - Efficient request queuing to prevent API overload
+  - Configurable caching to reduce unnecessary requests
+
+## Project Structure
+
+```
+ts-api-automation/
+├── src/
+│   ├── config/
+│   │   └── apiConfig.ts       # API configuration (base URL, endpoints)
+│   ├── services/
+│   │   └── apiService.ts      # Main API service implementation
+│   ├── utils/
+│   │   ├── errors.ts          # Custom error classes
+│   │   └── logger.ts          # Logging utility
+│   ├── tests/
+│   │   └── api.test.ts        # API tests
+│   └── index.ts               # Main entry point
+├── docs/
+│   ├── README.md              # This documentation
+│   └── USAGE.md              # Detailed usage guide
+├── package.json
+├── tsconfig.json
+└── .gitignore
+```
 
 ## Quick Start
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Sharma-IT/ts-api-automation.git
-   cd ts-api-automation
-   ```
+1. Install the package:
+```bash
+npm install ts-api-automation
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+2. Import and use:
+```typescript
+import { ApiService } from 'ts-api-automation';
 
-3. Run the example tests:
-   ```bash
-   npm test
-   ```
+const api = new ApiService({
+  baseUrl: 'https://api.example.com'
+});
+
+// Make API requests
+const users = await api.get('/users');
+const newUser = await api.post('/users', { 
+  name: 'John Doe',
+  email: 'john@example.com'
+});
+```
 
 ## Documentation
 
-For detailed information about using this framework, please refer to our [Usage Guide](USAGE.md). The guide covers:
+For detailed information about using this framework in your projects, please refer to our [Usage Guide](USAGE.md). The guide covers:
 
 - Complete setup and configuration
-- Making different types of API requests
+- Making type-safe API requests
 - Error handling strategies
-- Advanced features and best practices
-- Example test suites
+- Authentication and interceptors
+- Caching and request queuing
+- Best practices and examples
+- Service layer implementation
 
-## Examples
+## Development
 
-Here's a quick example of how to use the framework:
+1. Clone the repository:
+```bash
+git clone https://github.com/Sharma-IT/ts-api-automation.git
+cd ts-api-automation
+```
 
-```typescript
-import { ApiService } from './services/apiService.js';
-import { ENDPOINTS } from './config/apiConfig.js';
+2. Install dependencies:
+```bash
+npm install
+```
 
-const apiService = new ApiService();
+3. Run tests:
+```bash
+npm test
+```
 
-// Define your data types
-interface User {
-  id?: number;
-  name: string;
-  email: string;
-}
-
-async function testUserAPI() {
-  try {
-    // GET request
-    const users = await apiService.get(ENDPOINTS.USERS);
-    
-    // POST request
-    const newUser: User = {
-      name: 'John Doe',
-      email: 'john@example.com'
-    };
-    const created = await apiService.post(ENDPOINTS.USERS, newUser);
-    
-    // PUT request
-    const updated = await apiService.put(`${ENDPOINTS.USERS}/${created.id}`, {
-      name: 'John Updated'
-    });
-    
-    // DELETE request
-    await apiService.delete(`${ENDPOINTS.USERS}/${created.id}`);
-    
-  } catch (error) {
-    console.error('Test failed:', error);
-  }
-}
+4. Build the package:
+```bash
+npm run build
 ```
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the GNU v3.0 License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU v3.0 License - see the [LICENSE](../LICENSE) file for details.

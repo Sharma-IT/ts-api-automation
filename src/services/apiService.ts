@@ -4,15 +4,30 @@ import { NetworkError, ValidationError } from '../utils/errors.js';
 import NodeCache from 'node-cache';
 import PQueue from 'p-queue';
 
+export interface ApiServiceConfig {
+  baseUrl?: string;
+  timeout?: number;
+  retries?: number;
+  headers?: Record<string, string>;
+  cache?: {
+    stdTTL?: number;
+    maxKeys?: number;
+    checkperiod?: number;
+  };
+  queueConcurrency?: number;
+}
+
 export class ApiService {
   private baseUrl: string;
   private authToken: string | null = null;
   private interceptors: ((options: RequestInit) => RequestInit)[] = [];
-  private cache = new NodeCache({ stdTTL: 600 }); // Cache for 10 minutes
-  private queue = new PQueue({ concurrency: 5 }); // Adjust concurrency as needed
+  private cache: NodeCache;
+  private queue: PQueue;
 
-  constructor(baseUrl: string = API_BASE_URL) {
-    this.baseUrl = baseUrl;
+  constructor(config: ApiServiceConfig = {}) {
+    this.baseUrl = config.baseUrl || API_BASE_URL;
+    this.cache = new NodeCache(config.cache || { stdTTL: 600 });
+    this.queue = new PQueue({ concurrency: config.queueConcurrency || 5 });
   }
 
   setAuthToken(token: string) {
