@@ -66,7 +66,7 @@ const newUser = await api.post('/users', {
 
 ## Documentation
 
-For detailed information about using this framework in your projects, please refer to our [Usage Guide](USAGE.md). The guide covers:
+For detailed information about using this framework in your projects, please refer to our [Usage Guide](./docs/USAGE.md). The guide covers:
 
 - Complete setup and configuration
 - Making type-safe API requests
@@ -105,4 +105,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the GNU v3.0 License - see the [LICENSE](../LICENSE) file for details.
+This project is licensed under the GNU v3.0 License - see the [LICENSE](LICENSE) file for details.
